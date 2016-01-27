@@ -186,11 +186,23 @@ class QuestionPanel extends React.Component {
                      onKeyDown={this.handleInputKeyDown.bind(this)} />
       );
     });
-
+  
+    var customSets;
+    if( this.props.customSets ) {
+      customSets = this.props.customSets.map( cS => {
+        return this.props.getCustomRender(cS);
+      });
+    }  
     return (
       <div className='accordion-item active'>
         <div className='accordion-item__body'>
-          <div className='accordion-item__body__title u-t-center u-t-bold'>{this.props.panelHeader}</div>
+          { 
+            this.props.panelHeader 
+            ?
+            <div className='accordion-item__body__title u-t-center u-t-bold'>{this.props.panelHeader}</div>
+            :
+            undefined
+          }
 
       {/*<div className={this.props.classes.questionPanel}>
         {typeof this.props.panelHeader !== 'undefined'
@@ -217,6 +229,7 @@ class QuestionPanel extends React.Component {
           <div className={this.props.classes.questionSets}>
             {questionSets}
           </div>
+          {customSets}
           <div className='pure-u-1'>
             <div className={this.props.classes.buttonBar + ' tool-step-footer-container'}>
               {this.props.panelHistory.length > 1
