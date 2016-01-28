@@ -77,16 +77,18 @@ class Winterfell extends React.Component {
       this.panelHistory.push(panel.panelId);
     }
 
-    this.props.onSwitchPanel.call( null, panel, this.setPanel.bind(this,  panel ) );
+    this.setState({
+      currentPanel : panel
+    }, this.switchPanelCallback.bind( this, panel ));
+    // this.props.onSwitchPanel.call( null, panel, this.setPanel.bind(this,  panel ) );
     // this.setState({
     //   currentPanel : panel
     // }, this.props.onSwitchPanel.bind(null, panel));
   }
 
-  setPanel( panel ) {
-    this.setState({
-      currentPanel : panel
-    }, () => { $('html, body').animate({scrollTop:0}, 'slow');} );
+  switchPanelCallback( panel ) {
+    this.props.onSwitchPanel.call( null, panel);
+    $('html, body').animate({scrollTop:0}, 'slow');
   }
 
   handleBackButtonClick() {
