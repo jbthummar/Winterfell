@@ -235,7 +235,7 @@ class QuestionPanel extends React.Component {
               {this.props.panelHistory.length > 1
                 && !this.props.backButton.disabled
                 ? (
-                    <div className='u-inline'>
+                    <div className='u-inline u-m-bottom-normal'>
                       <Button text={this.props.backButton.text || 'Back'}
                               onClick={this.handleBackButtonClick.bind(this)}
                               className={this.props.classes.backButton} />
@@ -244,7 +244,7 @@ class QuestionPanel extends React.Component {
                 : undefined}
               {!this.props.button.disabled
                 ? (
-                    <div className='u-inline u-f-right'>
+                    <div className='u-inline u-f-right u-m-bottom-normal'>
                       <Button text={this.props.button.text}
                               onClick={this.handleMainButtonClick.bind(this)}
                               className={this.props.classes.controlButton} />
