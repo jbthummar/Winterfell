@@ -16,6 +16,7 @@ class Winterfell extends React.Component {
       formPanels     : [],
       questionPanels : [],
       questionSets   : [],
+      form           : {}
     }, this.props.schema);
 
     schema.formPanels = schema.formPanels
@@ -80,7 +81,16 @@ class Winterfell extends React.Component {
 
     this.setState({
       currentPanel : panel
-    }, this.props.onSwitchPanel.bind(null, panel));
+    }, this.switchPanelCallback.bind( this, panel ));
+    // this.props.onSwitchPanel.call( null, panel, this.setPanel.bind(this,  panel ) );
+    // this.setState({
+    //   currentPanel : panel
+    // }, this.props.onSwitchPanel.bind(null, panel));
+  }
+
+  switchPanelCallback( panel ) {
+    this.props.onSwitchPanel.call( null, panel);
+    $('html, body').animate({scrollTop:0}, 'slow');
   }
 
   handleBackButtonClick() {
@@ -114,32 +124,43 @@ class Winterfell extends React.Component {
                           panel => panel.panelId == this.state.currentPanel.panelId);
 
     return (
-      <form method={this.props.method}
-            encType={this.props.encType}
-            action={this.state.action}
-            ref={this.props.ref}
-            className={this.state.schema.classes.form}>
-        <div className={this.state.schema.classes.questionPanels}>
-          <QuestionPanel schema={this.state.schema}
-                         classes={this.state.schema.classes}
-                         panelId={currentPanel.panelId}
-                         panelIndex={currentPanel.panelIndex}
-                         panelHeader={currentPanel.panelHeader}
-                         panelText={currentPanel.panelText}
-                         action={currentPanel.action}
-                         button={currentPanel.button}
-                         backButton={currentPanel.backButton}
-                         questionSets={currentPanel.questionSets}
-                         questionAnswers={this.state.questionAnswers}
-                         panelHistory={this.panelHistory}
-                         renderError={this.props.renderError}
-                         renderRequiredAsterisk={this.props.renderRequiredAsterisk}
-                         onAnswerChange={this.handleAnswerChange.bind(this)}
-                         onPanelBack={this.handleBackButtonClick.bind(this)}
-                         onSwitchPanel={this.handleSwitchPanel.bind(this)}
-                         onSubmit={this.handleSubmit.bind(this)} />
+      <div className='tools-accordion-container tools-accordion-container--horizontal'>
+        <div className='pure-g'>
+          <div className="pure-u-1 u-c-background-white">
+            <div className="u-c-secondary u-t-center tools-accordion-container__header h2">{this.state.schema.form.header}</div>
+          </div>
+          <div className='pure-u-1'>
+            <form method={this.props.method}
+                  encType={this.props.encType}
+                  action={this.state.action}
+                  ref={this.props.ref}
+                  className={this.state.schema.classes.form}>
+              {/*<div className={this.state.schema.classes.questionPanels}>*/}
+                <QuestionPanel schema={this.state.schema}
+                               classes={this.state.schema.classes}
+                               panelId={currentPanel.panelId}
+                               panelIndex={currentPanel.panelIndex}
+                               panelHeader={currentPanel.panelHeader}
+                               panelText={currentPanel.panelText}
+                               action={currentPanel.action}
+                               button={currentPanel.button}
+                               backButton={currentPanel.backButton}
+                               questionSets={currentPanel.questionSets}
+                               customSets={currentPanel.customSets}
+                               questionAnswers={this.state.questionAnswers}
+                               panelHistory={this.panelHistory}
+                               renderError={this.props.renderError}
+                               renderRequiredAsterisk={this.props.renderRequiredAsterisk}
+                               onAnswerChange={this.handleAnswerChange.bind(this)}
+                               onPanelBack={this.handleBackButtonClick.bind(this)}
+                               onSwitchPanel={this.handleSwitchPanel.bind(this)}
+                               onSubmit={this.handleSubmit.bind(this)} 
+                               getCustomRender={this.props.getCustomRender}/>
+              {/*</div>*/}
+            </form>
+          </div>
         </div>
-      </form>
+      </div>
     );
   }
 
@@ -156,7 +177,8 @@ Winterfell.defaultProps = {
     formPanels     : [],
     questionPanels : [],
     questionSets   : [],
-    classes        : {}
+    classes        : {},
+    form           : {}
   },
   questionAnswers        : {},
   ref                    : 'form',
@@ -170,7 +192,8 @@ Winterfell.defaultProps = {
   onSubmit               : () => {},
   onUpdate               : () => {},
   onSwitchPanel          : () => {},
-  onRender               : () => {}
+  onRender               : () => {},
+  getCustomRender        : () => {}
 };
 
 Winterfell.inputTypes    = require('./inputTypes');

@@ -186,9 +186,25 @@ class QuestionPanel extends React.Component {
                      onKeyDown={this.handleInputKeyDown.bind(this)} />
       );
     });
-
+  
+    var customSets;
+    if( this.props.customSets ) {
+      customSets = this.props.customSets.map( cS => {
+        return this.props.getCustomRender(cS);
+      });
+    }  
     return (
-      <div className={this.props.classes.questionPanel}>
+      <div className='accordion-item active'>
+        <div className='accordion-item__body'>
+          { 
+            this.props.panelHeader 
+            ?
+            <div className='accordion-item__body__title u-t-center u-t-bold'>{this.props.panelHeader}</div>
+            :
+            undefined
+          }
+
+      {/*<div className={this.props.classes.questionPanel}>
         {typeof this.props.panelHeader !== 'undefined'
           || typeof this.props.panelText !== 'undefined'
           ? (
@@ -209,26 +225,34 @@ class QuestionPanel extends React.Component {
                   : undefined}
               </div>
             )
-          : undefined}
-        <div className={this.props.classes.questionSets}>
-          {questionSets}
-        </div>
-        <div className={this.props.classes.buttonBar}>
-          {this.props.panelHistory.length > 1
-            && !this.props.backButton.disabled
-            ? (
-                <Button text={this.props.backButton.text || 'Back'}
-                        onClick={this.handleBackButtonClick.bind(this)}
-                        className={this.props.classes.backButton} />
-              )
-            : undefined}
-          {!this.props.button.disabled
-            ? (
-                <Button text={this.props.button.text}
-                        onClick={this.handleMainButtonClick.bind(this)}
-                        className={this.props.classes.controlButton} />
-              )
-            : undefined}
+          : undefined} */}
+          <div className={this.props.classes.questionSets}>
+            {questionSets}
+          </div>
+          {customSets}
+          <div className='pure-u-1'>
+            <div className={this.props.classes.buttonBar + ' tool-step-footer-container'}>
+              {this.props.panelHistory.length > 1
+                && !this.props.backButton.disabled
+                ? (
+                    <div className='u-inline u-m-bottom-normal'>
+                      <Button text={this.props.backButton.text || 'Back'}
+                              onClick={this.handleBackButtonClick.bind(this)}
+                              className={this.props.classes.backButton} />
+                    </div>
+                  )
+                : undefined}
+              {!this.props.button.disabled
+                ? (
+                    <div className='u-inline u-f-right u-m-bottom-normal'>
+                      <Button text={this.props.button.text}
+                              onClick={this.handleMainButtonClick.bind(this)}
+                              className={this.props.classes.controlButton} />
+                    </div>
+                  )
+                : undefined}
+            </div>
+          </div>
         </div>
       </div>
     );
